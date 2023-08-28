@@ -1,0 +1,66 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: nkendyal-poi-backend-app-dev
+  annotations:
+    argocd/app-name: nkendyal-poi-backend-app-dev
+    backstage.io/kubernetes-id: nkendyal-poi-backend-app
+    backstage.io/kubernetes-namespace: nkendyal
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-air/nkendyal-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.r9m8ttn9.eastus2.aroapp.io/dev-pipelines/ns/nkendyal/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.r9m8ttn9.eastus2.aroapp.io/k8s/ns/nkendyal/deployments/nkendyal-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.r9m8ttn9.eastus2.aroapp.io/#https://github.com/rhdh-air/nkendyal-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/nkendyal"
+  system: workshop-system-nkendyal
+  providesApis:
+    - backend-api-nkendyal
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-nkendyal
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/nkendyal"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-nkendyal
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://nkendyal-poi-backend-app-nkendyal.apps.r9m8ttn9.eastus2.aroapp.io/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-air/nkendyal-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/nkendyal"
+  system: workshop-system-nkendyal
+  definition:
+    $text: https://github.com/rhdh-air/nkendyal-backend/tree/main/src/main/resources/META-INF/openapi.yaml
